@@ -1,1 +1,5 @@
-*/node_modules/*
+./Backend/ConTask/node_modules
+./Frontend/ConTask/node_modules
+./Frontend/ConTask/.idea
+./Backend/ConTask/.idea
+./Backend/ConTask/db
