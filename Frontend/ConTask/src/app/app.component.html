@@ -1,33 +1,54 @@
-<p>Hola</p>
-
-<div class="col-md-6">
-    <h2>Listao de notas</h2>
-    <ul class="list-group">
-        <li class="list-group-item" *ngFor="let n of my_notes">{{ n.title }}</li>
-    </ul>
-    <a class="btn btn-primary btn-block" (click)="addNote()">Nueva Nota</a>
-</div>
-
-<div class="col-md-6" *ngIf="show_form">
-    <h2>Nueva nota</h2>
-    <input class="form-control" type="text" placeholder="Titulo de la nota" [(ngModel)]="note.title"/>
-    <br>
-    <textarea class="form-control" placeholder="Descripción de la nota" [(ngModel)]="note.description"></textarea>
-    <hr />
+<!-- Listado de MENSAJES en la base de datos -->
+<!--<div class="content-fluid">
     <div class="row">
-        <div class="col-md-6">
-            <a class="btn btn-default btn-block" (click)="cancel()">Cancelar</a>
+        <!-- Lista de mensajes -->
+        <!--<div class="col-md-3">
+            <ul class=""list-group>
+                <li class="list-group-item" *ngFor="let n of datas" (click)="viewUpdater(n)">{{ n.text }}</li>
+            </ul>
+            <button class="btn btn-primary btn-block" (click)="addMessage()">Nuevo Mensaje</button>
         </div>
-        <div class="col-md-6">
-            <a class="btn btn-primary btn-block" (click)="createNote()">Guardar Nota</a>
+        <!-- Formulario nuevo mensaje -->
+        <!--<div class="col-md-6" *ngIf="show_form">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2>Nueva nota</h2>
+                </div>
+                <div class="panel-body">
+                    <textarea class="form-control" placeholder="Texto del mensaje" [(ngModel)]="message.text"></textarea>
+                    <hr />
+                </div>
+                <div class="panel-footer">
+                    <div class="col-md-6">
+                        <a class="btn btn-default btn-block" (click)="cancel()">Cancelar</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-primary btn-block" (click)="createMessage()">Guardar Mensaje</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" *ngIf="show_update">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2>Modificar/eliminar Mensaje</h2>
+                </div>
+                <div class="panel-body">
+                    <textarea class="form-control" [(ngModel)]="message.text"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <div class="col-md-4">
+                        <button class="btn btn-default btn-block" (click)="cancelUpdate()">Cancelar</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary btn-block" (click)="updateMessage()">Actualizar Mensaje</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary btn-block" (click)="deleteMessage()">Eliminar Mensaje</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</div>-->
 
-<div class="col-md-6">
-    <h2>Listao de mensajes</h2>
-    <ul class="list-group">
-        <li class="list-group-item" *ngFor="let n of results">{{ n.text }}</li>
-    </ul>
-    <a class="btn btn-primary btn-block" (click)="addMessage()">Nuevo Mensaje</a>
-</div>

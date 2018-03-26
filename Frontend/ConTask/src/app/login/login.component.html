@@ -1,0 +1,17 @@
+<div class="content-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2>Login</h2>
+        </div>
+        <div class="panel-body">
+          <input type="text" placeholder="alias" [(ngModel)]="credentials.username">
+          <hr />
+          <input type="password" placeholder="contraseña" [(ngModel)]="credentials.password">
+          <button routerLink="/" routerLinkActive="active" (click)="login()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+{
+  "name": "ConTask API documentation",
+  "version": "0.1.0",
+  "description": "API contask list manager",
+  "template": {
+    "forceLanguage": "en"
+  }
+}

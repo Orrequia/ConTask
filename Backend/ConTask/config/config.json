@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "0rr3qu14",
+    "database": "contask",
+    "host": "127.0.0.1",
+    "port": "5433",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "orrequia",
+    "password": "0rr3qu14",
+    "database": "contask",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "orrequia",
+    "password": "0rr3qu14",
+    "database": "contask",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

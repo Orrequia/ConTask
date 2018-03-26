@@ -1,82 +1,119 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+require('./config/database');
+require('./global_functions');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
 
-var app = express();
+//Express
+const express = require('express');
+const app = express();
 
-mongoose.connect('mongodb://localhost/message', { useMongoClient: true }, function (err, res) {
-    if(err)
-      throw err;
-    console.log('Connected to dateBase');
-});
+//Pasport
+const passport = require('passport');
+require('./middleware/passport')(passport); // pass passport for configuration
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+//Cookie and session
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+app.set('trust proxy', 1); // trust first proxy
+app.use(session({
+    secret: 'this is my super secret',
+    resave: true,
+    saveUninitialized: true
+}));
+
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+var roles = require('./middleware/roles');
+app.use(roles.middleware());
+
+//Body-parser
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+
+//Helmet
+const helmet = require('helmet');
+app.use(helmet());
+app.disable('x-powered-by');
+
+const auth = require('./routes/auth');
+const docs = require('./routes/doc');
+const empresa = require('./routes/empresa');
+const tienda = require('./routes/tienda');
+const trabajador = require('./routes/trabajador');
+const provincia = require('./routes/provincia');
+const contrato = require('./routes/contrato');
+const mochila = require('./routes/mochila');
+const tipoempresa = require('./routes/tipoempresa');
+const tipocontrato = require('./routes/tipocontrato');
+const tipomochila = require('./routes/tipomochila');
+const models = require('./models');
+
+models.sequelize.authenticate().then(() => {
+    console.log('Conectado a la base de datos SQL:', CONFIG.database);
+})
+    .catch(err => {
+        console.error('No se puede conectar a la base de datos:',CONFIG.database, err);
+    });
+if(CONFIG.app==='dev'){
+    models.sequelize.sync();//creates table if they do not already exist
+    // models.sequelize.sync({ force: true });//deletes all tables then recreates them useful for testing and development purposes
+}
+
+// CORS
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization, Content-Type');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    // Pass to next layer of middleware
     next();
 });
 
-//Import models and controllers
-var models = require('./models/message')(app, mongoose);
-var MessageCtrl = require('./controllers/message');
+app.use('/auth', auth);
+app.use('/api', docs);
 
-var router = express.Router();
-
-router.get('/', function (req, res) {
-    res.send("Hola Mundo--");
-});
-
-app.use(router);
-
-var api = express.Router();
-
-api.route('/messages')
-    .get(MessageCtrl.findAll)
-    .post(MessageCtrl.add);
-
-api.route('/messages/:id')
-    .get(MessageCtrl.findById)
-    .put(MessageCtrl.update)
-    .delete(MessageCtrl.delete);
-
-app.use('/api', api);
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
+app.use('/empresa', empresa);
+app.use('/tienda', tienda);
+app.use('/trabajador', trabajador);
+app.use('/provincia', provincia);
+app.use('/contrato', contrato);
+app.use('/mochila', mochila);
+app.use('/tipoempresa', tipoempresa);
+app.use('/tipomochila', tipomochila);
+app.use('/tipocontrato', tipocontrato);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    //res.render('error');
+    res.json({
+        message: err.message,
+        error: err
+    });
 });
 
 module.exports = app;

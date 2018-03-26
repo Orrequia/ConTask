@@ -1,60 +1,70 @@
 import {Component, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+class Message {
+    text: String;
+    _id: Number;
+    Message(text: String = null) {
+        this.text = text
+    }
+}
+
 @Component({
-    selector: 'seed-app',
+    selector: 'app-root',
     templateUrl: './app.component.html',
 })
+
 export class AppComponent implements OnInit {
 
-    name = '';
-    id = 5;
-    results: Object;
-
-    my_notes = [
-        { id: 1, title: 'Nota 1', description: 'Descripción de la nota numero 1' },
-        { id: 2, title: 'Nota 2', description: 'Descripción de la nota numero 2' },
-        { id: 3, title: 'Nota 3', description: 'Descripción de la nota numero 3' },
-        { id: 4, title: 'Nota 4', description: 'Descripción de la nota numero 4' },
-    ];
-
-    note = { id: null, title: null, description: null };
+    message: Message;
+    datas = {};
 
     show_form = false;
-    show_new_message = false;
+    show_update = false;
+    username: String;
+    password: String;
 
-    addNote() {
-      this.show_form = true;
+    addMessage() {
+        this.message = new Message();
+        this.show_form = true;
     }
-
     cancel() {
       this.show_form = false;
-      this.note = { id: null, title: null, description: null };
     }
-
-    createNote() {
-
-      this.note.id = this.id;
-      this.id++;
-      this.my_notes.push(this.note);
-      this.show_form = false;
-      this.note = { id: null, title: null, description: null };
-    };
-
-      addMessage() {
-          this.show_new_message = true;
-      }
-
       // Inject HttpClient into your component or service.*/
     constructor(private http: HttpClient) {}
 
     ngOnInit(): void {
-        // Make the HTTP request:
-        this.http.get('http://localhost:3000/api/messages').subscribe(data => {
+        this.http.get<Array<Message>>('http://localhost:3000/api/messages').subscribe(datas => {
             // Read the result field from the JSON response.
-            this.results = data;
+            this.datas = datas;
         });
     }
+    createMessage() {
+        //this.datas.push(this.message);
+        this.http.post('http://localhost:3000/api/messages', this.message).subscribe();
+        this.show_form = false;
+        this.message = new Message();
+    }
+    viewUpdater(message) {
+        this.message = new Message();
+        this.message.text = message.text;
+        this.message._id = message._id;
+
+        this.show_update = true;
+    }
+    cancelUpdate() {
+        this.show_update = false;
+    }
+    updateMessage() {
+        this.http.put('http://localhost:3000/api/messages/' + this.message._id, this.message).subscribe();
+        //this.datas.find(result => result._id === this.message._id)
+        //    .text = this.message.text;
+        this.show_update = false;
+    }
+    deleteMessage() {
+        this.http.delete('http://localhost:3000/api/messages/' + this.message._id).subscribe();
+
+        this.show_update = false;
+    }
 }
-
-

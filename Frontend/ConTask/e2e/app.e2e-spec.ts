@@ -1,6 +1,6 @@
 import { AngularElectronSeedPage } from './app.po';
 
-describe('angular-electron-seed App', () => {
+describe('ConTask App', () => {
   let page: AngularElectronSeedPage;
 
   beforeEach(() => {

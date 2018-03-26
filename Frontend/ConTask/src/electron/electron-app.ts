@@ -4,13 +4,13 @@ import * as path from 'path';
 
 let applicationRef: Electron.BrowserWindow = null;
 
-const debugMode = false;
+const debugMode = true;
 
 const mainWindowSettings: Electron.BrowserWindowConstructorOptions = {
-    width: 800,
-    height: 550,
+    minWidth: 300,
+    minHeight: 400,
     frame: true,
-    resizable: false
+    resizable: true,
 };
 
 function initMainListener() {
@@ -24,6 +24,7 @@ function initMainListener() {
 
 function createWindow() {
     applicationRef = new BrowserWindow(mainWindowSettings);
+    applicationRef.maximize();
     applicationRef.loadURL(`file:///${__dirname}/index.html`);
     if (debugMode) {
         // Open the DevTools.
