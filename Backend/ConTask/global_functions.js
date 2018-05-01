@@ -28,15 +28,14 @@ ReE = function(res, err, code){ // Error Web Response
 };
 
 ReS = function(res, data, code){ // Success Web Response
-    let send_data = {success:true};
 
     if(typeof data == 'object'){
-        send_data = Object.assign(data, send_data);//merge the objects
+        send_data = Object.assign(data);//merge the objects
     }
 
     if(typeof code !== 'undefined') res.statusCode = code;
 
-    return res.json(send_data)
+    return res.json(send_data);
 };
 
 //This is here to handle all the uncaught promise rejections

@@ -1,70 +1,40 @@
-import {Component, OnInit} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { remote, ipcRenderer } from 'electron';
+import { Store } from '@ngrx/store';
 
-class Message {
-    text: String;
-    _id: Number;
-    Message(text: String = null) {
-        this.text = text
-    }
-}
+import * as fromStore from '@app/state';
+import { Logout } from '@app/core/auth/actions/auth.action';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
+export class AppComponent {
+  title = 'app';
 
-export class AppComponent implements OnInit {
+    //constructor(private store: Store<fromStore.State>) {}
+      /*const menu = remote.Menu.buildFromTemplate([{
+          label: 'Archivo',
+          submenu: [{
+              label: 'Open',
+              click: () => {
+                  console.log('Hola Macareno');
+              }
+          }, {
+              label: 'Openanother',
+              click: () => {
+                  ipcRenderer.send('Opengoogle');
+              }
+          }]
+      }]);
+      remote.Menu.setApplicationMenu(menu);*/
 
-    message: Message;
-    datas = {};
+    loggedIn$ = this.store.select(fromStore.selectIsLoggedIn);
 
-    show_form = false;
-    show_update = false;
-    username: String;
-    password: String;
+    constructor(private store: Store<fromStore.State>) {}
 
-    addMessage() {
-        this.message = new Message();
-        this.show_form = true;
-    }
-    cancel() {
-      this.show_form = false;
-    }
-      // Inject HttpClient into your component or service.*/
-    constructor(private http: HttpClient) {}
-
-    ngOnInit(): void {
-        this.http.get<Array<Message>>('http://localhost:3000/api/messages').subscribe(datas => {
-            // Read the result field from the JSON response.
-            this.datas = datas;
-        });
-    }
-    createMessage() {
-        //this.datas.push(this.message);
-        this.http.post('http://localhost:3000/api/messages', this.message).subscribe();
-        this.show_form = false;
-        this.message = new Message();
-    }
-    viewUpdater(message) {
-        this.message = new Message();
-        this.message.text = message.text;
-        this.message._id = message._id;
-
-        this.show_update = true;
-    }
-    cancelUpdate() {
-        this.show_update = false;
-    }
-    updateMessage() {
-        this.http.put('http://localhost:3000/api/messages/' + this.message._id, this.message).subscribe();
-        //this.datas.find(result => result._id === this.message._id)
-        //    .text = this.message.text;
-        this.show_update = false;
-    }
-    deleteMessage() {
-        this.http.delete('http://localhost:3000/api/messages/' + this.message._id).subscribe();
-
-        this.show_update = false;
+    onLogout() {
+        this.store.dispatch(new Logout());
     }
 }

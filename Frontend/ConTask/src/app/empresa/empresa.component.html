@@ -1,0 +1,53 @@
+<mat-button-toggle-group class="second-menu" #group="matButtonToggleGroup">
+  <mat-button-toggle value="center">
+    <mat-icon>format_align_center</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle value="right">
+    <mat-icon>format_align_right</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle value="justify" disabled>
+    <mat-icon>format_align_justify</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+
+
+<div class="flex-container" fxLayout="row" fxLayoutAlign="start start" fxFill>
+  <div class="flex-item list-empresas" fxFlex="25" fxFlex.xs="100" fxFill>
+
+    <div class="filter">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
+    <mat-table class="table-companies" #table [dataSource]="companies" matSort>
+
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+        <mat-cell *matCellDef="let company"> {{company.id}} </mat-cell>
+      </ng-container>
+
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="nombre">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+        <mat-cell *matCellDef="let company"> {{company.nombre}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+
+  <div class="flex-item" fxFlex fxFill>
+    <button mat-button raise color="accent" (click)="logout()">Log Out</button>
+
+    <!--<mat-form-field class="example-form-field">
+      <input matInput type="text" placeholder="Clearable input" [(ngModel)]="value"/>
+      <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <button mat-button (click)="delete(companies.data[0])">Borrame</button>
+    </mat-form-field>-->
+  </div>
+</div>

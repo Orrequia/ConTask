@@ -27,9 +27,6 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-var roles = require('./middleware/roles');
-app.use(roles.middleware());
-
 //Body-parser
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());

@@ -57,4 +57,8 @@ router.post('/signup', authController.signup);
 // Loguearse
 router.post('/login', authController.login);
 
+router.get('/logged', authController.logged);
+
+router.post('/logout', authController.logout);
+
 module.exports = router;

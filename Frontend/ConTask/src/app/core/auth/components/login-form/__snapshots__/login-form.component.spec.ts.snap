@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login Form Component should compile 1`] = `
+<app-login-form
+  loginForm={[Function FormGroup]}
+  submitted={[Function EventEmitter]}
+>
+  <mat-card>
+    <mat-card-title>
+       Login 
+    </mat-card-title>
+    <mat-card-content>
+      <form>
+        <mat-form-field>
+          <input
+            formcontrolname="alias"
+            matinput=""
+            placeholder="Username"
+            type="text"
+          />
+          
+          <mat-error>
+            El alias es necesario
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            formcontrolname="contrasena"
+            matinput=""
+            placeholder="Password"
+            type="password"
+          />
+          
+          <mat-error>
+            La contraseña es necesaria
+          </mat-error>
+        </mat-form-field>
+        
+        <div
+          class="loginButtons"
+        >
+          <button
+            mat-button=""
+            type="submit"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</app-login-form>
+`;

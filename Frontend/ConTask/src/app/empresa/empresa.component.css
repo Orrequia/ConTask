@@ -1,0 +1,45 @@
+.mat-table {
+    overflow: auto;
+}
+
+.mat-header-cell.mat-sort-header-sorted {
+    color: black;
+}
+
+.list-empresas {
+    border-right: solid 1px lightgrey;
+}
+
+.table-companies {
+    border-top: solid 1px lightgrey;
+}
+
+.mat-header-row {
+    min-height: 28px;
+    height: 28px;
+}
+.mat-row {
+    min-height: 28px;
+    height: 28px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}
+
+.second-menu {
+    box-shadow: none;
+    position: fixed;
+    width: calc(100% - 60px);
+    height: 60px;
+    top: 0px;
+    left: 60px;
+    border-bottom: solid 1px lightgrey;
+}
+
+.filter {
+    padding: 8px 20px 0;
+}
+
+.mat-form-field {
+    width: 100%;
+}

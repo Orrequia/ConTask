@@ -41,11 +41,31 @@ const login = async function(req, res) {
     let err, usuario;
 
     [err, usuario] = await to(authService.authUser(req.body));
-    if(err) return ReE(res, err, 422);
+    if(err)
+        return ReE(res, err, 422);
 
     return ReS(res, {token:usuario.getJWT(), usuario:usuario.toWeb()});
 };
 module.exports.login = login;
+
+const logout = async function(req, res) {
+
+    req.logOut();
+
+    return ReS(res, { message: "LogOut con éxito"});
+};
+module.exports.logout = logout;
+
+const logged = async function(req, res) {
+
+    passport.authenticate('jwt', { session: false}, function(err, usuario, info) {
+        if (!usuario)
+            return ReS(res, { logged: false, message: "Usuario no logueado"});
+        else
+            return ReS(res, { usuario: usuario, logged: true, message: "Usuario logueado"});
+    })(req, res);
+};
+module.exports.logged = logged;
 
 /*exports.getToken = function (headers) {
     if (headers && headers.authorization) {
